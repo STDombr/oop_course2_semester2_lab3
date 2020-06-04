@@ -1,12 +1,12 @@
 #include <iostream>
 #include <ctime>
 #include <thread>
-#include <chrono>
-#include "Tests/GoogleTest.cpp"
+#include "Matrix/Matrix.h"
+#include <gtest/gtest.h>
 
 using namespace std;
 
-unsigned int maxThread;
+unsigned int maxThread = 4;
 unsigned int N;
 
 void enter(unsigned int &temp)
@@ -19,32 +19,6 @@ void enter(unsigned int &temp)
         else
             std::cout<<"Invalid, enter new: ";
     }
-}
-
-void multiParallel(Matrix A, Matrix B, Matrix &C, int temp)
-{
-    int i = temp;
-    while (i<N)
-    {
-        for (int j=0; j<N; j++)
-        {
-            C.arr[i][j] = 0;
-            for (int k=0; k<N; k++)
-                C.arr[i][j] += A.arr[i][k] * B.arr[k][j];
-        }
-        i += maxThread;
-    }
-}
-
-void multiStandart(Matrix A, Matrix B, Matrix &C)
-{
-    for (int i=0; i<N; i++)
-        for (int j=0; j<N; j++)
-        {
-            C.arr[i][j] = 0;
-                for (int k=0; k<N; k++)
-                    C.arr[i][j] += A.arr[i][k] * B.arr[k][j];
-        }
 }
 
 void menu(){
@@ -71,8 +45,7 @@ void menu(){
         std::cout<<"8 - Print matrix B"<<std::endl;
         std::cout<<"9 - Calculate multiplication"<<std::endl;
         std::cout<<"10 - Print matrix C"<<std::endl;
-        std::cout<<"11 - Run GoogleTests"<<std::endl;
-        std::cout<<"12 - Exit"<<std::endl;
+        std::cout<<"11 - Exit"<<std::endl;
         std::cout<<"==============================================================="<<std::endl;
         std::cin>>temp;
 
@@ -112,22 +85,11 @@ void menu(){
         }
         else if (temp == 9)
         {
-            std::thread threads[maxThread];
-            auto begin = std::chrono::steady_clock::now();
-            for (int i=0; i<maxThread; i++)
-                threads[i] = std::thread(multiParallel, matrixA, matrixB, std::ref(matrixC), i);
-            for (int i=0; i<maxThread; i++)
-                threads[i].join();
-            auto end = std::chrono::steady_clock::now();
+            auto time = matrixC.multiplyParallel(matrixA, matrixB);
+            std::cout<<"Parallel algorithm :"<<time<<" microseconds"<<std::endl;
 
-            std::cout<<"Parallel algorithm :"<<std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()<<" microseconds"<<std::endl;
-
-
-            begin = std::chrono::steady_clock::now();
-            multiStandart(matrixA, matrixB, matrixC);
-            end = std::chrono::steady_clock::now();
-
-            std::cout<<"Standart algorithm :"<<std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()<<" microseconds"<<std::endl;
+            time = matrixC.multiply(matrixA, matrixB);
+            std::cout<<"Standart algorithm :"<<time<<" microseconds"<<std::endl;
         }
         else if (temp == 10)
         {
@@ -135,10 +97,6 @@ void menu(){
             matrixC.display();
         }
         else if (temp == 11)
-        {
-
-        }
-        else if (temp == 12)
         {
             return;
         }
@@ -148,6 +106,8 @@ void menu(){
 int main() {
     srand(time(0));
 
+    //::testing::InitGoogleTest();
+    //return RUN_ALL_TESTS();
     menu();
     return 0;
 }
