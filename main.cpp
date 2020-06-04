@@ -73,6 +73,7 @@ void menu(){
         std::cout<<"10 - Print matrix C"<<std::endl;
         std::cout<<"11 - Run GoogleTests"<<std::endl;
         std::cout<<"12 - Exit"<<std::endl;
+        std::cout<<"==============================================================="<<std::endl;
         std::cin>>temp;
 
         if (temp == 1)
@@ -85,7 +86,7 @@ void menu(){
         }
         else if (temp == 3)
         {
-
+            matrixA.fromFile("matrixA.txt");
         }
         else if (temp == 4)
         {
@@ -102,7 +103,7 @@ void menu(){
         }
         else if (temp == 7)
         {
-
+            matrixB.fromFile("matrixB.txt");
         }
         else if (temp == 8)
         {
