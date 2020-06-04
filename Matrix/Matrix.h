@@ -6,13 +6,13 @@
 
 class Matrix {
 private:
-    int n;
+    unsigned int n = 0;
 public:
     std::vector<std::vector<int>> arr;
-    Matrix(int n);
+    Matrix(unsigned int n);
     void random();
     void fromFile(std::string name);
-    int getN();
+    unsigned int getN();
     void create();
     void display();
 

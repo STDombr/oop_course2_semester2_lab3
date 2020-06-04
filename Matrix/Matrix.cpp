@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 
-Matrix::Matrix(int n)
+Matrix::Matrix(unsigned int n)
 {
     this->n = n;
 
@@ -20,7 +20,7 @@ void Matrix::random()
             arr[i][j] = rand()%10000;
 }
 
-int Matrix::getN()
+unsigned int Matrix::getN()
 {
     return n;
 }
