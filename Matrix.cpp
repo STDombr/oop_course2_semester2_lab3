@@ -1,5 +1,6 @@
 #include "Matrix.h"
 #include <iostream>
+#include <fstream>
 
 Matrix::Matrix(int n)
 {
@@ -16,7 +17,7 @@ void Matrix::random()
 {
     for(int i = 0; i<n; i++)
         for(int j = 0; j<n; j++)
-            arr[i][j] = rand()%10;
+            arr[i][j] = rand()%10000;
 }
 
 int Matrix::getN()
@@ -40,5 +41,17 @@ void Matrix::display()
         for (int j = 0; j < n; j++)
             std::cout<<arr[i][j]<<" ";
         std::cout<<std::endl;
+    }
+}
+
+void Matrix::fromFile(std::string name)
+{
+    std::ifstream fileA;
+    fileA.open(name);
+    int temp, count = 0;
+    while (fileA >> temp && count < n*n)
+    {
+        this->arr[count / n][count % n] = temp;
+        count++;
     }
 }
