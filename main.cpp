@@ -2,14 +2,14 @@
 #include <ctime>
 #include <thread>
 #include <chrono>
-#include "Matrix.h"
+#include "Tests/GoogleTest.cpp"
 
 using namespace std;
 
-int maxThread;
-int N;
+unsigned int maxThread;
+unsigned int N;
 
-void enter(int &temp)
+void enter(unsigned int &temp)
 {
     while(true)
     {
