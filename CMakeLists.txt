@@ -7,6 +7,7 @@ add_subdirectory(lib/googletest)
 
 include_directories(lib/googletest/googletest/include)
 include_directories(Tests)
+include_directories(files)
 include_directories(Matrix)
 
 add_executable(oop_course2_semester2_lab3 main.cpp
