@@ -78,36 +78,40 @@ void Matrix::fromFile(std::string name)
      */
 long long int Matrix::multiply(Matrix A, Matrix B, int temp)
 {
-    auto b2 = std::chrono::steady_clock::now();
-
-    if (temp == -1)
+    if ((A.getN() == B.getN()) && (A.getN() == n))
     {
-        for (int i=0; i<n; i++)
-            for (int j=0; j<n; j++)
+        auto b2 = std::chrono::steady_clock::now();
+        if (temp == -1)
+        {
+            for (int i=0; i<n; i++)
+                for (int j=0; j<n; j++)
+                {
+                    this->arr[i][j] = 0;
+                    for (int k=0; k<n; k++)
+                        this->arr[i][j] += A.arr[i][k] * B.arr[k][j];
+                }
+        }
+        else
+        {
+            int i = temp;
+            while (i<n)
             {
-                this->arr[i][j] = 0;
-                for (int k=0; k<n; k++)
-                    this->arr[i][j] += A.arr[i][k] * B.arr[k][j];
+                for (int j=0; j<n; j++)
+                {
+                    this->arr[i][j] = 0;
+                    for (int k=0; k<n; k++)
+                        this->arr[i][j] += A.arr[i][k] * B.arr[k][j];
+                }
+                i += maxThread;
             }
+        }
+
+        auto e2 = std::chrono::steady_clock::now();
+        return std::chrono::duration_cast<std::chrono::microseconds>(e2 - b2).count();
     }
     else
-    {
-        int i = temp;
-        while (i<n)
-        {
-            for (int j=0; j<n; j++)
-            {
-                this->arr[i][j] = 0;
-                for (int k=0; k<n; k++)
-                    this->arr[i][j] += A.arr[i][k] * B.arr[k][j];
-            }
-            i += maxThread;
-        }
-    }
-
-    auto e2 = std::chrono::steady_clock::now();
-
-    return std::chrono::duration_cast<std::chrono::microseconds>(e2 - b2).count();
+        std::cout<<"Error"<<std::endl;
+    return 0;
 }
 
 /**
@@ -118,15 +122,21 @@ long long int Matrix::multiply(Matrix A, Matrix B, int temp)
      */
 long long int Matrix::multiplyParallel(Matrix A, Matrix B)
 {
-    auto b1 = std::chrono::steady_clock::now();
+    if ((A.getN() == B.getN()) && (A.getN() == n))
+    {
+        auto b1 = std::chrono::steady_clock::now();
 
-    std::thread threads[maxThread];
-    for (int i=0; i<maxThread; i++)
-        threads[i] = std::thread(&Matrix::multiply, this, A, B, i);
-    for (int i=0; i<maxThread; i++)
-        threads[i].join();
+        std::thread threads[maxThread];
+        for (int i = 0; i < maxThread; i++)
+            threads[i] = std::thread(&Matrix::multiply, this, A, B, i);
+        for (int i = 0; i < maxThread; i++)
+            threads[i].join();
 
-    auto e1 = std::chrono::steady_clock::now();
+        auto e1 = std::chrono::steady_clock::now();
 
-    return std::chrono::duration_cast<std::chrono::microseconds>(e1 - b1).count();
+        return std::chrono::duration_cast<std::chrono::microseconds>(e1 - b1).count();
+    }
+    else
+        std::cout<<"Error"<<std::endl;
+    return 0;
 }
