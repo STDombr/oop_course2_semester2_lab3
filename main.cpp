@@ -26,7 +26,7 @@ void enter(unsigned int &temp)
 /**
  * function created standart menu in console
  */
-void menu(){
+int menu(){
     int temp;
     std::cout<<"Enter N (count of rows, colums): ";
     enter(N);
@@ -105,11 +105,11 @@ void menu(){
         else if (temp == 11)
         {
             ::testing::InitGoogleTest();
-            RUN_ALL_TESTS();
+            return RUN_ALL_TESTS();
         }
         else if (temp == 12)
         {
-            return;
+            return 0;
         }
     }
 }
