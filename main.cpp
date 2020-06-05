@@ -8,7 +8,10 @@ using namespace std;
 
 unsigned int maxThread = 4;
 unsigned int N;
-
+/**
+ * function to enter N or maxThread
+ * @param temp contains info about variable
+ */
 void enter(unsigned int &temp)
 {
     while(true)
@@ -20,7 +23,9 @@ void enter(unsigned int &temp)
             std::cout<<"Invalid, enter new: ";
     }
 }
-
+/**
+ * function created standart menu in console
+ */
 void menu(){
     int temp;
     std::cout<<"Enter N (count of rows, colums): ";
@@ -45,7 +50,8 @@ void menu(){
         std::cout<<"8 - Print matrix B"<<std::endl;
         std::cout<<"9 - Calculate multiplication"<<std::endl;
         std::cout<<"10 - Print matrix C"<<std::endl;
-        std::cout<<"11 - Exit"<<std::endl;
+        std::cout<<"11 - Run Google Tests"<<std::endl;
+        std::cout<<"12 - Exit"<<std::endl;
         std::cout<<"==============================================================="<<std::endl;
         std::cin>>temp;
 
@@ -59,7 +65,7 @@ void menu(){
         }
         else if (temp == 3)
         {
-            matrixA.fromFile("matrixA.txt");
+            matrixA.fromFile("../files/matrixA.txt");
         }
         else if (temp == 4)
         {
@@ -76,7 +82,7 @@ void menu(){
         }
         else if (temp == 7)
         {
-            matrixB.fromFile("matrixB.txt");
+            matrixB.fromFile("../files/matrixB.txt");
         }
         else if (temp == 8)
         {
@@ -98,6 +104,11 @@ void menu(){
         }
         else if (temp == 11)
         {
+            ::testing::InitGoogleTest();
+            RUN_ALL_TESTS();
+        }
+        else if (temp == 12)
+        {
             return;
         }
     }
@@ -106,8 +117,6 @@ void menu(){
 int main() {
     srand(time(0));
 
-    //::testing::InitGoogleTest();
-    //return RUN_ALL_TESTS();
     menu();
     return 0;
 }
