@@ -3,7 +3,10 @@
 #include <fstream>
 #include <thread>
 #include <chrono>
-
+/**
+     * Constructor for matrix
+     * @param n contains count of rows and colums
+     */
 Matrix::Matrix(unsigned int n)
 {
     this->n = n;
@@ -14,19 +17,26 @@ Matrix::Matrix(unsigned int n)
     for(int i = 0; i<n; i++)
         arr.push_back(temp);
 }
-
+/**
+     * Function to creating random matrix
+     */
 void Matrix::random()
 {
     for(int i = 0; i<n; i++)
         for(int j = 0; j<n; j++)
             arr[i][j] = rand()%1000 - 500;
 }
-
+/**
+     * function to return n
+     * @return count of rows and colums
+     */
 unsigned int Matrix::getN()
 {
     return n;
 }
-
+/**
+     * function to creating matrix from console
+     */
 void Matrix::create()
 {
     std::cout<<"Enter "<<n*n<<" elements:"<<std::endl;
@@ -34,7 +44,9 @@ void Matrix::create()
         for(int j = 0; j<n; j++)
             std::cin>>arr[i][j];
 }
-
+/**
+     * function to print matrix in console
+     */
 void Matrix::display()
 {
     for (int i = 0; i < n; i++)
@@ -57,7 +69,13 @@ void Matrix::fromFile(std::string name)
     }
 }
 
-
+/**
+     * function to multiply matrix, if temp==-1 standart multiply, else multiply 1/maxThread of matrix
+     * @param A first matrix
+     * @param B second matrix
+     * @param temp contains info about which thread is used
+     * @return execution time
+     */
 long long int Matrix::multiply(Matrix A, Matrix B, int temp)
 {
     auto b2 = std::chrono::steady_clock::now();
@@ -92,7 +110,12 @@ long long int Matrix::multiply(Matrix A, Matrix B, int temp)
     return std::chrono::duration_cast<std::chrono::microseconds>(e2 - b2).count();
 }
 
-
+/**
+     * fuction to ctart parralel multiplying
+     * @param A first matrix
+     * @param B second matrix
+     * @return execution time
+     */
 long long int Matrix::multiplyParallel(Matrix A, Matrix B)
 {
     auto b1 = std::chrono::steady_clock::now();
